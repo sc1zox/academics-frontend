@@ -1,9 +1,8 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import {enviroment} from '../../../enviroment/enviroment';
+import {HttpInterceptorFn} from '@angular/common/http';
+import {environment} from '../../../enviroment/environment';
 
 export const apiPrefixInterceptor: HttpInterceptorFn = (request, next) => {
-  let serverUrl = enviroment.apiUrl;
-
+  let serverUrl = environment.apiUrl;
   // loading static content from assets directory of the frontend
   if (request.url.startsWith('assets')) {
     return next(request);

@@ -8,6 +8,7 @@ main {
   flex: 1;
   display: grid;
   grid-template: 'main' 1fr / minmax(0, 100vw);
+  padding: 1rem;
 }
 footer {
   padding: 0.5rem 1rem;

@@ -1,2 +1,7 @@
-<p>home-page works!</p>
-<button mat-button>test</button>
+<div class="form-group">
+  <label for="file">Choose File</label>
+  <input (change)="handleFileInput($event)"
+         id="file"
+         type="file">
+</div>
+<button (click)="sendPdf()" [disabled]="!fileToUpload" class="primary" matButton>Abschicken</button>
