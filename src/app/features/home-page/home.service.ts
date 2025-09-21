@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class PdfService {
+export class HomeService {
   private http = inject(HttpClient);
 
   public uploadPdf(file: File) {

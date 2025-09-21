@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {MatButton} from '@angular/material/button';
-import {PdfService} from '../../core/pdf.service';
+import {HomeService} from './home.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,7 +12,7 @@ import {PdfService} from '../../core/pdf.service';
 })
 export class HomePageComponent {
   protected fileToUpload?: File;
-  private pdf = inject(PdfService);
+  private pdf = inject(HomeService);
 
   handleFileInput(event: Event) {
     const fileToUpload = (event?.target as HTMLInputElement).files?.item(0);
