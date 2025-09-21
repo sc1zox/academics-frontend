@@ -1,0 +1,18 @@
+.form-wrapper {
+  border: darkblue 5px solid;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 10px 0;
+}
+
+button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

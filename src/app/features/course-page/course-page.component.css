@@ -1,0 +1,13 @@
+app-course-form {
+  display: inline-block;
+  max-width: 800px;
+  padding: 10px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex-direction: column;
+  justify-content: center;
+}
+

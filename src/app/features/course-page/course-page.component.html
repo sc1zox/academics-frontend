@@ -1,0 +1,9 @@
+<app-course-menu (course)="createCourse()"></app-course-menu>
+<div class="content-wrapper">
+  @for (course of courses(); track course._id) {
+    @if (course._id) {
+      <app-course-form [course]="course" (submitted)="updateCourse($event)"
+                       (deleted)="deleteCourse($event)"></app-course-form>
+    }
+  }
+</div>
