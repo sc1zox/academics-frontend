@@ -1,6 +1,9 @@
 <app-course-menu (course)="createCourse()"></app-course-menu>
 <div class="content-wrapper">
-  @for (course of courses(); track course._id) {
+  @for (course of courses(); track course._id; let i = $index) {
+    @if (i === 0 || course.section !== courses()[i - 1].section) {
+      <h2>{{ course.section }}</h2>
+    }
     @if (course._id) {
       <app-course-form [course]="course" (submitted)="updateCourse($event)"
                        (deleted)="deleteCourse($event)"></app-course-form>

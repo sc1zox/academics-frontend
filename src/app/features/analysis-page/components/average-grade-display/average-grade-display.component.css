@@ -1,0 +1,8 @@
+mat-card {
+  padding: 1em;
+  display: inline-block;
+}
+
+.bold {
+  font-weight: bold;
+}
