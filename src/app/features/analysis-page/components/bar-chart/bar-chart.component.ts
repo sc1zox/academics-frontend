@@ -20,7 +20,7 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
     datasets: [
       {
         data: [],
-        label: 'Grade',
+        label: 'Count',
         backgroundColor: 'rgba(30,60,248,0.5)',
       },
     ],
@@ -37,6 +37,9 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
         type: 'linear',
         title: {display: true, text: 'Counts'},
         ticks: {stepSize: 1}
+      },
+      x: {
+        title: {display: true, text: 'Grade'},
       }
     }
   };
