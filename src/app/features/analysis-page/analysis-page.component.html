@@ -1,3 +1,9 @@
+<div class="progress-container">
+  <h2>Progress</h2>
+  <p>{{ totalCurrentEcts }} / {{ maxEcts }}</p>
+  <app-progress [percentage]="completionPercentage"></app-progress>
+</div>
+<div class="border"></div>
 <div class="chart-container">
   <app-average-grade-display [avgGrade]="avgGrade"></app-average-grade-display>
   <app-grade-achievement [neededAvg]="neededAvg"></app-grade-achievement>

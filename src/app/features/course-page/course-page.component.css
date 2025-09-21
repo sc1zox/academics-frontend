@@ -16,6 +16,21 @@ app-course-form {
 .content-wrapper h2 {
   grid-column: 1/-1;
   padding: 10px;
-  justify-self: center;
 }
 
+@media (max-width: 768px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 20px;
+  }
+
+  app-course-form {
+    width: auto;
+    max-width: 800px;
+  }
+
+  .content-wrapper h2 {
+    justify-self: center;
+  }
+}

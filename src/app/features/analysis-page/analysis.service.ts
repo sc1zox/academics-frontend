@@ -15,6 +15,7 @@ export class AnalysisService {
   private a5Ects: number = 13;
   private currentEcts: number = 0;
   private weightedGrades: number = 0;
+  private totalCurrentEcts: number = 0;
 
   constructor(private courseService: CourseService) {
     this.courses = this.courseService.courses;
@@ -30,14 +31,17 @@ export class AnalysisService {
   public recalculate() {
     let weightedGrades: number = 0;
     let currentEcts: number = 0;
+    let totalCurrentEcts: number = 0;
     for (const c of this.courses()) {
       if (c.section !== SectionEnum.A5) {
         weightedGrades += c.grade * c.ects;
         currentEcts += c.ects;
       }
+      totalCurrentEcts += c.ects;
     }
     this.weightedGrades = weightedGrades;
     this.currentEcts = currentEcts;
+    this.totalCurrentEcts = totalCurrentEcts;
   }
 
   public getGradeOccurrence() {
@@ -68,6 +72,18 @@ export class AnalysisService {
     }
 
     return result;
+  }
+
+  public getTotalCurrentEcts() {
+    return this.totalCurrentEcts;
+  }
+
+  public getCompletionPercentage() {
+    return (this.totalCurrentEcts / this.maxEcts) * 100;
+  }
+
+  public getMaxEcts() {
+    return this.maxEcts;
   }
 
 }
