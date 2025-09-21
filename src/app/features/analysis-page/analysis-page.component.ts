@@ -15,6 +15,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import {GradeAchievementComponent} from './components/grade-achievement/grade-achievement.component';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Legend, Tooltip, PieController, ArcElement);
 
@@ -23,7 +24,8 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Leg
   imports: [
     BarChartComponent,
     AverageGradeDisplayComponent,
-    PieChartComponent
+    PieChartComponent,
+    GradeAchievementComponent
   ],
   templateUrl: './analysis-page.component.html',
   styleUrl: './analysis-page.component.css'
@@ -34,6 +36,7 @@ export class AnalysisPageComponent implements OnInit {
 
   public grades: number[] = [];
   public avgGrade: number = 0;
+  public neededAvg?: Record<number, number>;
 
   constructor(private analysisService: AnalysisService) {
   }
@@ -41,5 +44,6 @@ export class AnalysisPageComponent implements OnInit {
   public ngOnInit() {
     this.grades = this.analysisService.getGradeOccurrence();
     this.avgGrade = Math.round(this.analysisService.getAverageGrade() * 1000) / 1000;
+    this.neededAvg = this.analysisService.requiredGradesForTargets();
   }
 }

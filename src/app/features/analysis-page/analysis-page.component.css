@@ -1,14 +1,9 @@
-:host {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
-
-
 .chart-container {
   margin-top: 5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
   width: 100%;
+  align-items: center;
+  justify-items: center;
 }

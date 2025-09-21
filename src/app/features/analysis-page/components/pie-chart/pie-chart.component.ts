@@ -16,7 +16,7 @@ export class PieChartComponent implements OnChanges, AfterViewInit {
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
   public pieChartData: ChartData<'pie'> = {
-    labels: [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0, 5.0],
+    labels: [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0],
     datasets: [
       {
         data: [],
@@ -32,7 +32,6 @@ export class PieChartComponent implements OnChanges, AfterViewInit {
           'rgba(255, 77, 0, 0.7)',    // 3.3
           'rgba(255, 51, 0, 0.7)',    // 3.7
           'rgba(255, 26, 0, 0.7)',    // 4.0
-          'rgba(255, 0, 0, 0.7)'      // 5.0
         ],
         borderColor: '#fff',
         borderWidth: 1,
@@ -46,13 +45,6 @@ export class PieChartComponent implements OnChanges, AfterViewInit {
       legend: {position: 'top'},
       title: {display: true, text: 'Grade Distribution'},
     },
-    scales: {
-      y: {
-        type: 'linear',
-        title: {display: true, text: 'Counts'},
-        ticks: {stepSize: 1}
-      }
-    }
   };
 
   ngAfterViewInit(): void {

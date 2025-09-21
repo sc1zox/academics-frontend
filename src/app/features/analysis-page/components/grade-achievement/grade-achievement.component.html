@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-title>Benötigter Schnitt für Zielnoten</mat-card-title>
+  <mat-card-content>
+    <table class="needed-table">
+      <thead>
+      <tr>
+        <th>Zielnote</th>
+        <th>Benötigter Schnitt (verbleibende ECTS)</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (entry of neededAvg | keyvalue; track entry.key) {
+          <tr>
+            <td>{{ entry.key }}</td>
+            <td>
+              @if (entry.value < 1) {
+                <span class="unreachable">Nicht erreichbar (unter 1.0)</span>
+              } @else if (entry.value > 4) {
+                <span class="unreachable">Nicht erreichbar (über 4.0)</span>
+              } @else {
+                {{ entry.value | number: '1.2-2' }}
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
