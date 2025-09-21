@@ -1,4 +1,14 @@
-import {Component, DestroyRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  signal,
+  SimpleChanges
+} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {CourseFormControls, CourseMapper} from '../../../../shared/mapper/course-mapper';
@@ -7,6 +17,8 @@ import {debounceTime, distinctUntilChanged, filter, map,} from 'rxjs';
 import {Course} from '../../../../shared/interfaces/course';
 import {MatIcon} from '@angular/material/icon';
 import {MatMiniFabButton} from '@angular/material/button';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {SectionEnum} from '../../../../shared/interfaces/section.enum';
 
 @Component({
   selector: 'app-course-form',
@@ -17,6 +29,8 @@ import {MatMiniFabButton} from '@angular/material/button';
     MatInput,
     MatIcon,
     MatMiniFabButton,
+    MatSelect,
+    MatOption,
   ],
   templateUrl: './course-form.component.html',
   styleUrl: './course-form.component.css'
@@ -25,12 +39,14 @@ export class CourseFormComponent implements OnChanges, OnInit {
   @Input({required: true}) course!: Course;
   @Output() submitted = new EventEmitter<Course>();
   @Output() deleted = new EventEmitter<string>();
+  public sectionOptions = signal<SectionEnum[]>(Object.values(SectionEnum));
+
   public courseForm = new FormGroup<CourseFormControls>({
     _id: new FormControl('', Validators.required),
     code: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     grade: new FormControl(0, Validators.required),
-    section: new FormControl('', Validators.required),
+    section: new FormControl<SectionEnum | null>(null, Validators.required),
     ects: new FormControl(0, Validators.required),
   });
 
@@ -68,7 +84,7 @@ export class CourseFormComponent implements OnChanges, OnInit {
       code: this.course.code,
       name: this.course.name,
       grade: this.course.grade,
-      section: this.course.section,
+      section: this.course.section as SectionEnum,
       ects: this.course.ects
     }, {emitEvent: false});
   }

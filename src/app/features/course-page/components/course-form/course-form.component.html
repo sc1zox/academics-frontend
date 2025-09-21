@@ -20,7 +20,11 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Section</mat-label>
-      <input formControlName="section" matInput/>
+      <mat-select formControlName="section">
+        @for (option of sectionOptions(); track sectionOptions()) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
