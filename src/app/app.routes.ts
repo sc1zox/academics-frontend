@@ -21,6 +21,10 @@ export const routes: Routes = [
       {
         path: 'analytics',
         loadComponent: () => import('../app/features/analysis-page/analysis-page.component').then(m => m.AnalysisPageComponent),
+      },
+      {
+        path: 'arena',
+        loadComponent: () => import('../app/features/arena-page/arena-page.component').then(m => m.ArenaPageComponent),
       }
 
     ]
