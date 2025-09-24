@@ -3,8 +3,14 @@ import {environment} from '../../../../enviroment/environment';
 
 export const apiPrefixInterceptor: HttpInterceptorFn = (request, next) => {
   let serverUrl = environment.apiUrl;
+  let serverLeagueUrl = environment.leagueApiUrl;
   // loading static content from assets directory of the frontend
   if (request.url.startsWith('assets')) {
+    return next(request);
+  }
+
+  //skip League Api
+  if (request.url.startsWith(serverLeagueUrl)) {
     return next(request);
   }
 

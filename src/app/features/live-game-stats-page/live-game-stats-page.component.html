@@ -1,0 +1,102 @@
+<mat-card>
+  <mat-card-title>Live Game Stats</mat-card-title>
+  <mat-card-content>
+
+    <!-- Summoner Info -->
+    <mat-list>
+      <mat-list-item><strong>Summoner:</strong> {{ liveGameStats()?.summonerName ?? '' }}</mat-list-item>
+      <mat-list-item><strong>Riot ID:</strong> {{ liveGameStats()?.riotId ?? '' }}</mat-list-item>
+      <mat-list-item><strong>Game Name:</strong> {{ liveGameStats()?.riotIdGameName ?? '' }}</mat-list-item>
+      <mat-list-item><strong>Tagline:</strong> {{ liveGameStats()?.riotIdTagLine ?? '' }}</mat-list-item>
+      <mat-list-item><strong>Level:</strong> {{ liveGameStats()?.level ?? 0 }}</mat-list-item>
+      <mat-list-item><strong>Gold:</strong> {{ liveGameStats()?.currentGold ?? 0 }}</mat-list-item>
+      <mat-list-item><strong>Team Colors Relative:</strong> {{ liveGameStats()?.teamRelativeColors ?? false }}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+
+    <!-- Champion Stats -->
+    <h3>Champion Stats</h3>
+    <mat-list>
+      <mat-list-item>
+        <strong>HP:</strong>
+        <mat-progress-bar [value]="(liveGameStats()?.championStats?.currentHealth ?? 0) / (liveGameStats()?.championStats?.maxHealth ?? 1) * 100"
+                          mode="determinate">
+        </mat-progress-bar>
+        {{ liveGameStats()?.championStats?.currentHealth ?? 0 }} /
+        {{ liveGameStats()?.championStats?.maxHealth ?? 0 }}
+      </mat-list-item>
+
+      <mat-list-item>
+        <strong>Resource:</strong>
+        <mat-progress-bar [value]="(liveGameStats()?.championStats?.resourceValue ?? 0) / (liveGameStats()?.championStats?.resourceMax ?? 1) * 100" color="accent"
+                          mode="determinate">
+        </mat-progress-bar>
+        {{ liveGameStats()?.championStats?.resourceValue ?? 0 }} /
+        {{ liveGameStats()?.championStats?.resourceMax ?? 0 }}
+        ({{ liveGameStats()?.championStats?.resourceType ?? '' }})
+      </mat-list-item>
+
+      <mat-list-item>Ability Haste: {{ liveGameStats()?.championStats?.abilityHaste ?? 0 }}</mat-list-item>
+      <mat-list-item>Ability Power: {{ liveGameStats()?.championStats?.abilityPower ?? 0 }}</mat-list-item>
+      <mat-list-item>Attack Damage: {{ liveGameStats()?.championStats?.attackDamage ?? 0 }}</mat-list-item>
+      <mat-list-item>Attack Range: {{ liveGameStats()?.championStats?.attackRange ?? 0 }}</mat-list-item>
+      <mat-list-item>Attack Speed: {{ liveGameStats()?.championStats?.attackSpeed ?? 0 }}</mat-list-item>
+      <mat-list-item>Armor: {{ liveGameStats()?.championStats?.armor ?? 0 }}</mat-list-item>
+      <mat-list-item>Armor Pen Flat: {{ liveGameStats()?.championStats?.armorPenetrationFlat ?? 0 }}</mat-list-item>
+      <mat-list-item>Armor Pen %: {{ liveGameStats()?.championStats?.armorPenetrationPercent ?? 0 }}</mat-list-item>
+      <mat-list-item>Bonus Armor Pen %: {{ liveGameStats()?.championStats?.bonusArmorPenetrationPercent ?? 0 }}
+      </mat-list-item>
+      <mat-list-item>Bonus Magic Pen %: {{ liveGameStats()?.championStats?.bonusMagicPenetrationPercent ?? 0 }}
+      </mat-list-item>
+      <mat-list-item>Crit Chance: {{ liveGameStats()?.championStats?.critChance ?? 0 }}</mat-list-item>
+      <mat-list-item>Crit Damage: {{ liveGameStats()?.championStats?.critDamage ?? 0 }}</mat-list-item>
+      <mat-list-item>Heal/Shield Power: {{ liveGameStats()?.championStats?.healShieldPower ?? 0 }}</mat-list-item>
+      <mat-list-item>Health Regen: {{ liveGameStats()?.championStats?.healthRegenRate ?? 0 }}</mat-list-item>
+      <mat-list-item>Life Steal: {{ liveGameStats()?.championStats?.lifeSteal ?? 0 }}</mat-list-item>
+      <mat-list-item>Magic Lethality: {{ liveGameStats()?.championStats?.magicLethality ?? 0 }}</mat-list-item>
+      <mat-list-item>Magic Pen Flat: {{ liveGameStats()?.championStats?.magicPenetrationFlat ?? 0 }}</mat-list-item>
+      <mat-list-item>Magic Pen %: {{ liveGameStats()?.championStats?.magicPenetrationPercent ?? 0 }}</mat-list-item>
+      <mat-list-item>Magic Resist: {{ liveGameStats()?.championStats?.magicResist ?? 0 }}</mat-list-item>
+      <mat-list-item>Move Speed: {{ liveGameStats()?.championStats?.moveSpeed ?? 0 }}</mat-list-item>
+      <mat-list-item>Omnivamp: {{ liveGameStats()?.championStats?.omnivamp ?? 0 }}</mat-list-item>
+      <mat-list-item>Physical Lethality: {{ liveGameStats()?.championStats?.physicalLethality ?? 0 }}</mat-list-item>
+      <mat-list-item>Physical Vamp: {{ liveGameStats()?.championStats?.physicalVamp ?? 0 }}</mat-list-item>
+      <mat-list-item>Spell Vamp: {{ liveGameStats()?.championStats?.spellVamp ?? 0 }}</mat-list-item>
+      <mat-list-item>Tenacity: {{ liveGameStats()?.championStats?.tenacity ?? 0 }}</mat-list-item>
+      <mat-list-item>Resource Regen: {{ liveGameStats()?.championStats?.resourceRegenRate ?? 0 }}</mat-list-item>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+
+    <!-- Abilities -->
+    <h3>Abilities</h3>
+    <mat-list>
+      <mat-list-item>Passive: {{ liveGameStats()?.abilities?.Passive?.displayName ?? '' }}</mat-list-item>
+      <mat-list-item>Q: {{ liveGameStats()?.abilities?.Q?.displayName ?? '' }}
+        (Lvl {{ liveGameStats()?.abilities?.Q?.abilityLevel ?? 0 }})
+      </mat-list-item>
+      <mat-list-item>W: {{ liveGameStats()?.abilities?.W?.displayName ?? '' }}
+        (Lvl {{ liveGameStats()?.abilities?.W?.abilityLevel ?? 0 }})
+      </mat-list-item>
+      <mat-list-item>E: {{ liveGameStats()?.abilities?.E?.displayName ?? '' }}
+        (Lvl {{ liveGameStats()?.abilities?.E?.abilityLevel ?? 0 }})
+      </mat-list-item>
+      <mat-list-item>R: {{ liveGameStats()?.abilities?.R?.displayName ?? '' }}
+        (Lvl {{ liveGameStats()?.abilities?.R?.abilityLevel ?? 0 }})
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+
+    <!-- Runes -->
+    <h3>Runes</h3>
+    <mat-list>
+      <mat-list-item>Keystone: {{ liveGameStats()?.fullRunes?.keystone?.displayName ?? '' }}</mat-list-item>
+      <mat-list-item>Primary: {{ liveGameStats()?.fullRunes?.primaryRuneTree?.displayName ?? '' }}</mat-list-item>
+      <mat-list-item>Secondary: {{ liveGameStats()?.fullRunes?.secondaryRuneTree?.displayName ?? '' }}</mat-list-item>
+    </mat-list>
+
+  </mat-card-content>
+</mat-card>
