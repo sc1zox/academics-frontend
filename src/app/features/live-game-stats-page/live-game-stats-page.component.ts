@@ -4,6 +4,7 @@ import {LiveGameStats} from '../../shared/interfaces/live-game-stats';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatDivider, MatList, MatListItem} from '@angular/material/list';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-live-game-stats-page',
@@ -15,6 +16,7 @@ import {MatProgressBar} from '@angular/material/progress-bar';
     MatListItem,
     MatDivider,
     MatProgressBar,
+    MatButton,
   ],
   templateUrl: './live-game-stats-page.component.html',
   styleUrl: './live-game-stats-page.component.css'
@@ -33,8 +35,12 @@ export class LiveGameStatsPageComponent implements OnInit {
     this.error = this.liveGameStatsService.error;
   }
 
-  public click() {
-    console.log(this.liveGameStats());
+  public startPolling() {
+    this.liveGameStatsService.startPolling();
+  }
+
+  public stopPolling() {
+    this.liveGameStatsService.stopPolling();
   }
 
 }
