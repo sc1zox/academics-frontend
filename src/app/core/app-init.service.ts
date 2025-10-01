@@ -12,6 +12,7 @@ export class AppInitService {
   public init(){
     console.log("App initializing...");
     this.courseService.getAllCourses();
+    console.log("App initialized");
   }
 
 }
