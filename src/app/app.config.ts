@@ -14,7 +14,7 @@ const initializeAppFn = () => {
 export const appConfig: ApplicationConfig = {
   providers: [AppInitService,
     provideAppInitializer(initializeAppFn),
-    provideZoneChangeDetection({eventCoalescing: true}),
+    provideZoneChangeDetection(),
     provideRouter(routes, withRouterConfig({paramsInheritanceStrategy: 'always'})),
     provideHttpClient(withInterceptors([loggingInterceptor, apiPrefixInterceptor])),
   ]
