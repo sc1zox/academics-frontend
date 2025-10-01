@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, Input, OnChanges, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {ChartData, ChartOptions} from 'chart.js';
+import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-pie-chart',
@@ -10,16 +11,15 @@ import {ChartData, ChartOptions} from 'chart.js';
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css'
 })
-export class PieChartComponent implements OnChanges, AfterViewInit {
-  @Input({required: true}) grades!: number[];
-
+export class PieChartComponent {
+  private as = inject(AnalysisService)
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
   public pieChartData: ChartData<'pie'> = {
     labels: [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0],
     datasets: [
       {
-        data: [],
+        data: this.as.gradeOccurrence(),
         label: 'Grade',
         backgroundColor: [
           'rgba(1,90,1,0.7)',     // 1.0
@@ -46,21 +46,4 @@ export class PieChartComponent implements OnChanges, AfterViewInit {
       title: {display: true, text: 'Grade Distribution'},
     },
   };
-
-  ngAfterViewInit(): void {
-    this.updateChart();
-  }
-
-  ngOnChanges(): void {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
-
-  private updateChart(): void {
-    if (this.grades?.length) {
-      this.pieChartData.datasets[0].data = [...this.grades];
-      this.chart.update();
-    }
-  }
 }

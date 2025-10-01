@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {BarChartComponent} from './components/bar-chart/bar-chart.component';
-import {AnalysisService} from './analysis.service';
+import {AnalysisService, maxEcts} from './analysis.service';
 import {AverageGradeDisplayComponent} from './components/average-grade-display/average-grade-display.component';
 import {PieChartComponent} from './components/pie-chart/pie-chart.component';
 import {
@@ -35,20 +35,6 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Leg
 
 
 export class AnalysisPageComponent {
-
-  public grades: number[] = [];
-  public avgGrade: number = 0;
-  public neededAvg?: Record<number, number>;
-  public completionPercentage: number = 0;
-  public maxEcts: number = 0;
-  public totalCurrentEcts: number = 0;
-
-  constructor(private analysisService: AnalysisService) {
-    this.grades = this.analysisService.getGradeOccurrence();
-    this.avgGrade = Math.round(this.analysisService.getAverageGrade() * 1000) / 1000;
-    this.neededAvg = this.analysisService.requiredGradesForTargets();
-    this.completionPercentage = this.analysisService.getCompletionPercentage();
-    this.totalCurrentEcts = this.analysisService.getTotalCurrentEcts();
-    this.maxEcts = this.analysisService.getMaxEcts();
-  }
+  protected aS = inject(AnalysisService);
+  protected readonly maxEcts = maxEcts;
 }

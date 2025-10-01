@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {DecimalPipe, KeyValuePipe} from '@angular/common';
+import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-grade-achievement',
@@ -15,6 +16,6 @@ import {DecimalPipe, KeyValuePipe} from '@angular/common';
   styleUrl: './grade-achievement.component.css'
 })
 export class GradeAchievementComponent {
-  @Input({required: true}) neededAvg?: Record<number, number>;
-
+  private aS = inject(AnalysisService);
+  public requiredGradesForTargets = this.aS.requiredGradesForTargets;
 }

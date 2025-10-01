@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, Input, OnChanges, ViewChild} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {ChartData, ChartOptions,} from 'chart.js';
+import {AnalysisService} from '../../analysis.service';
 
 
 @Component({
@@ -11,15 +12,15 @@ import {ChartData, ChartOptions,} from 'chart.js';
   templateUrl: './bar-chart.component.html',
   styleUrl: './bar-chart.component.css'
 })
-export class BarChartComponent implements AfterViewInit, OnChanges {
-  @Input({required: true}) grades: number[] = [];
-  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+export class BarChartComponent {
+
+  private as = inject(AnalysisService)
 
   public barChartData: ChartData<'bar'> = {
     labels: [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0],
     datasets: [
       {
-        data: [],
+        data: this.as.gradeOccurrence(),
         label: 'Count',
         backgroundColor: 'rgba(30,60,248,0.5)',
       },
@@ -43,21 +44,4 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
       }
     }
   };
-
-  ngAfterViewInit(): void {
-    this.updateChart();
-  }
-
-  ngOnChanges(): void {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
-
-  private updateChart(): void {
-    if (this.grades?.length) {
-      this.barChartData.datasets[0].data = [...this.grades];
-      this.chart.update();
-    }
-  }
 }

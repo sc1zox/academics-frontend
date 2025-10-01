@@ -1,4 +1,4 @@
-import {ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, inject, provideAppInitializer, provideZonelessChangeDetection} from '@angular/core';
 import {provideRouter, withRouterConfig} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -14,7 +14,7 @@ const initializeAppFn = () => {
 export const appConfig: ApplicationConfig = {
   providers: [AppInitService,
     provideAppInitializer(initializeAppFn),
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withRouterConfig({paramsInheritanceStrategy: 'always'})),
     provideHttpClient(withInterceptors([loggingInterceptor, apiPrefixInterceptor])),
   ]

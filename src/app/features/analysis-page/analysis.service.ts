@@ -1,89 +1,65 @@
-import {effect, Injectable, WritableSignal} from '@angular/core';
+import {computed, inject, Injectable} from '@angular/core';
 import {CourseService} from '../course-page/course.service';
-import {Course} from '../../shared/interfaces/course';
 import {SectionEnum} from '../../shared/interfaces/section.enum';
 
-const gradeSteps = [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0, 5.0];
+export const gradeSteps = [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0, 5.0];
+export const a5Ects = 13;
+export const maxEcts = 180;
+
+export const relevantMaxEcts = maxEcts - a5Ects;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalysisService {
-  public courses: WritableSignal<Course[]>;
-  public grades: number[] = [];
-  private maxEcts: number = 180;
-  private a5Ects: number = 13;
-  private currentEcts: number = 0;
-  private weightedGrades: number = 0;
-  private totalCurrentEcts: number = 0;
+  private cS = inject(CourseService);
 
-  constructor(private courseService: CourseService) {
-    this.courses = this.courseService.courses;
-    this.grades = this.courses().map(c => c.grade);
-    this.recalculate();
+  public courses = this.cS.courses;
+  public grades = computed(() => this.courses().map(c => c.grade));
+  public currentEcts = computed(() => this.calculateCurrentEcts());
+  public weightedGrades = computed(() => this.calculateWeightedGrades());
+  public totalCurrentEcts =
+    computed(() => this.courses().reduce((acc, c) => acc + c.ects, 0));
+  public averageGrade = computed(() => this.weightedGrades() / this.currentEcts());
+  public completionPercentage = computed(() => (this.totalCurrentEcts() / maxEcts) * 100);
+  public gradeOccurrence = computed(() => this.calculateGradeOccurrence());
+  public requiredGradesForTargets = computed(() => this.calculateRequiredGradesForTargets());
+  public remainingEcts = computed(() => relevantMaxEcts - this.currentEcts());
 
-    effect(() => {
-      this.grades = this.courses().map(c => c.grade);
-      this.recalculate();
-    });
+  private calculateCurrentEcts() {
+    return this.courses().filter(c => c.section !== SectionEnum.A5).reduce((acc, c) => acc + c.ects, 0);
   }
 
-  public recalculate() {
-    let weightedGrades: number = 0;
-    let currentEcts: number = 0;
-    let totalCurrentEcts: number = 0;
-    for (const c of this.courses()) {
-      if (c.section !== SectionEnum.A5) {
-        weightedGrades += c.grade * c.ects;
-        currentEcts += c.ects;
-      }
-      totalCurrentEcts += c.ects;
-    }
-    this.weightedGrades = weightedGrades;
-    this.currentEcts = currentEcts;
-    this.totalCurrentEcts = totalCurrentEcts;
+  private calculateWeightedGrades() {
+    return this.courses().filter(c => c.section !== SectionEnum.A5).reduce((acc, c) => acc + c.grade * c.ects, 0);
   }
 
-  public getGradeOccurrence() {
+  private calculateGradeOccurrence() {
     const counts: Record<number, number> = {};
-    this.grades.forEach((g) => counts[g] = (counts[g] || 0) + 1);
-
-    const uniqueSorted = Array.from(new Set(this.grades)).sort((a, b) => a - b);
-
+    this.grades().forEach((g) => counts[g] = (counts[g] || 0) + 1);
+    const uniqueSorted = Array.from(new Set(this.grades())).sort((a, b) => a - b);
     return uniqueSorted.map((grade) => counts[grade]);
   }
 
-  public getAverageGrade() {
-    return this.weightedGrades / this.currentEcts;
-  }
-
-  public requiredGradesForTargets(): Record<number, number> {
+  private calculateRequiredGradesForTargets() {
     const result: Record<number, number> = {};
 
-    const relevantMaxEcts = this.maxEcts - this.a5Ects;
-    const remainingEcts = relevantMaxEcts - this.currentEcts;
+    const currentWeighted = this.weightedGrades();
+    const currEcts = this.currentEcts();
+    const remaining = this.remainingEcts();
+
+    if (remaining <= 0) {
+      for (const target of gradeSteps) {
+        result[target] = (currEcts > 0 && this.averageGrade() <= target) ? 0 : Infinity;
+      }
+      return result;
+    }
 
     for (const target of gradeSteps) {
-      const needed =
-        (target * (this.currentEcts + remainingEcts) - this.weightedGrades) /
-        remainingEcts;
-
-      result[target] = gradeSteps.find((g) => g >= needed) ?? 5.0;
+      const numerator = target * relevantMaxEcts - currentWeighted;
+      result[target] = numerator / remaining;
     }
 
     return result;
   }
-
-  public getTotalCurrentEcts() {
-    return this.totalCurrentEcts;
-  }
-
-  public getCompletionPercentage() {
-    return (this.totalCurrentEcts / this.maxEcts) * 100;
-  }
-
-  public getMaxEcts() {
-    return this.maxEcts;
-  }
-
 }

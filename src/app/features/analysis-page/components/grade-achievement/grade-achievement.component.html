@@ -9,7 +9,7 @@
       </tr>
       </thead>
       <tbody>
-        @for (entry of neededAvg | keyvalue; track entry.key) {
+        @for (entry of requiredGradesForTargets() | keyvalue; track entry.key) {
           <tr>
             <td>{{ entry.key }}</td>
             <td>

@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-progress',
@@ -10,5 +11,6 @@ import {MatProgressBar} from '@angular/material/progress-bar';
   styleUrl: './progress.component.css'
 })
 export class ProgressComponent {
-  @Input({required: true}) percentage!: number;
+  private aS = inject(AnalysisService);
+  public completionPercentage = this.aS.completionPercentage;
 }
