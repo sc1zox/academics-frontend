@@ -1,10 +1,10 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {DecimalPipe, KeyValuePipe} from '@angular/common';
-import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-grade-achievement',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardTitle,
@@ -16,6 +16,5 @@ import {AnalysisService} from '../../analysis.service';
   styleUrl: './grade-achievement.component.css'
 })
 export class GradeAchievementComponent {
-  private aS = inject(AnalysisService);
-  public requiredGradesForTargets = this.aS.requiredGradesForTargets;
+  public requiredGradesForTargets = input.required<Record<string, number>>();
 }

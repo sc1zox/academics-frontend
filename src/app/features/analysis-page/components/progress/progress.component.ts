@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {MatProgressBar} from '@angular/material/progress-bar';
-import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-progress',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar
   ],
@@ -11,6 +11,5 @@ import {AnalysisService} from '../../analysis.service';
   styleUrl: './progress.component.css'
 })
 export class ProgressComponent {
-  private aS = inject(AnalysisService);
-  public completionPercentage = this.aS.completionPercentage;
+  public completionPercentage = input.required<number>();
 }

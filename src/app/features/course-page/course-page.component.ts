@@ -1,4 +1,4 @@
-import {Component, OnInit, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {CourseService} from './course.service';
 import {CourseFormComponent} from './components/course-form/course-form.component';
 import {CourseMenuComponent} from './components/course-menu/course-menu.component';
@@ -6,6 +6,7 @@ import {Course} from '../../shared/interfaces/course';
 
 @Component({
   selector: 'app-course-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CourseFormComponent,
     CourseMenuComponent,
@@ -13,23 +14,16 @@ import {Course} from '../../shared/interfaces/course';
   templateUrl: './course-page.component.html',
   styleUrl: './course-page.component.css'
 })
-export class CoursePageComponent implements OnInit {
-
-  public courses!: WritableSignal<Course[]>
-
-  constructor(private courseService: CourseService) {
-  }
-
-  public ngOnInit() {
-    this.courses = this.courseService.courses;
-  }
+export class CoursePageComponent {
+  private courseService = inject(CourseService)
+  public courses = this.courseService.courses;
 
   public createCourse() {
     this.courseService.create({
       name: '',
       code: '',
-      ects: 0,
-      grade: 0,
+      ects: undefined,
+      grade: undefined,
       section: ''
     });
   }

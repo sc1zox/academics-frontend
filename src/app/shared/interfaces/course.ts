@@ -5,5 +5,5 @@ export interface Course {
   ects: number;
   code: string;
   raw?: string;
-  _id?: string;
+  _id: string;
 }

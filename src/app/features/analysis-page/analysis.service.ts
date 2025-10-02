@@ -12,15 +12,15 @@ export const relevantMaxEcts = maxEcts - a5Ects;
   providedIn: 'root'
 })
 export class AnalysisService {
-  private cS = inject(CourseService);
+  private courseService = inject(CourseService);
 
-  public courses = this.cS.courses;
+  public courses = this.courseService.courses;
   public grades = computed(() => this.courses().map(c => c.grade));
   public currentEcts = computed(() => this.calculateCurrentEcts());
   public weightedGrades = computed(() => this.calculateWeightedGrades());
   public totalCurrentEcts =
     computed(() => this.courses().reduce((acc, c) => acc + c.ects, 0));
-  public averageGrade = computed(() => this.weightedGrades() / this.currentEcts());
+  public averageGrade = computed(() => Math.round((this.weightedGrades() / this.currentEcts())*1000)/1000);
   public completionPercentage = computed(() => (this.totalCurrentEcts() / maxEcts) * 100);
   public gradeOccurrence = computed(() => this.calculateGradeOccurrence());
   public requiredGradesForTargets = computed(() => this.calculateRequiredGradesForTargets());

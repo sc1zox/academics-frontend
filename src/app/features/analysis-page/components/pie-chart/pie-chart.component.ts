@@ -1,10 +1,10 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {ChartData, ChartOptions} from 'chart.js';
-import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-pie-chart',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     BaseChartDirective
   ],
@@ -12,14 +12,12 @@ import {AnalysisService} from '../../analysis.service';
   styleUrl: './pie-chart.component.css'
 })
 export class PieChartComponent {
-  private as = inject(AnalysisService)
-  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
-
-  public pieChartData: ChartData<'pie'> = {
+  public gradeOccurrence = input.required<number[]>()
+  public pieChartData = computed<ChartData<'pie'>>(() => ({
     labels: [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0],
     datasets: [
       {
-        data: this.as.gradeOccurrence(),
+        data: this.gradeOccurrence(),
         label: 'Grade',
         backgroundColor: [
           'rgba(1,90,1,0.7)',     // 1.0
@@ -37,7 +35,7 @@ export class PieChartComponent {
         borderWidth: 1,
       },
     ],
-  };
+  }));
 
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,

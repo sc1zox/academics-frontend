@@ -1,19 +1,9 @@
-import {
-  Component,
-  DestroyRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  signal,
-  SimpleChanges
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, effect, inject, input, output, signal,} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {CourseFormControls, CourseMapper} from '../../../../shared/mapper/course-mapper';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {debounceTime, distinctUntilChanged, filter, map,} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs';
 import {Course} from '../../../../shared/interfaces/course';
 import {MatIcon} from '@angular/material/icon';
 import {MatMiniFabButton} from '@angular/material/button';
@@ -22,6 +12,7 @@ import {SectionEnum} from '../../../../shared/interfaces/section.enum';
 
 @Component({
   selector: 'app-course-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatFormField,
     ReactiveFormsModule,
@@ -35,57 +26,56 @@ import {SectionEnum} from '../../../../shared/interfaces/section.enum';
   templateUrl: './course-form.component.html',
   styleUrl: './course-form.component.css'
 })
-export class CourseFormComponent implements OnChanges, OnInit {
-  @Input({required: true}) course!: Course;
-  @Output() submitted = new EventEmitter<Course>();
-  @Output() deleted = new EventEmitter<string>();
-  public sectionOptions = signal<SectionEnum[]>(Object.values(SectionEnum));
+export class CourseFormComponent {
+  private destroyRef = inject(DestroyRef);
 
-  public courseForm = new FormGroup<CourseFormControls>({
-    _id: new FormControl('', Validators.required),
-    code: new FormControl('', Validators.required),
-    name: new FormControl('', Validators.required),
-    grade: new FormControl(0, Validators.required),
-    section: new FormControl<SectionEnum | null>(null, Validators.required),
-    ects: new FormControl(0, Validators.required),
+  public course = input.required<Course>();
+
+  public submitted = output<Course>();
+  public deleted = output<string>();
+
+  protected readonly sectionOptions = signal<SectionEnum[]>(Object.values(SectionEnum));
+
+  protected readonly courseForm = new FormGroup<CourseFormControls>({
+    _id: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    code: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    name: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    grade: new FormControl(0, {nonNullable: true, validators: [Validators.required]}),
+    section: new FormControl<SectionEnum | null>(null, {validators: [Validators.required]}),
+    ects: new FormControl(0, {nonNullable: true, validators: [Validators.required]}),
   });
 
-  constructor(private destroyRef: DestroyRef) {
-  }
+  constructor() {
+    effect(() => {
+      this.patchForm(this.course());
+    });
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['course'] && changes['course'].currentValue) {
-      this.patchForm();
-    }
-  }
-
-  public ngOnInit() {
     this.courseForm.valueChanges
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map(() => CourseMapper.courseFormToCourse(this.courseForm)),
-        debounceTime(2000),
+        debounceTime(1000),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         filter(() => this.courseForm.valid)
       )
       .subscribe((course) => {
         console.log(course);
         this.submitted.emit(course);
-      })
+      });
   }
 
-  public deleteCourse(): void {
-    this.deleted.emit(this.course._id);
+  protected deleteCourse(): void {
+    this.deleted.emit(this.course()._id);
   }
 
-  private patchForm(): void {
+  private patchForm(course: Course): void {
     this.courseForm.patchValue({
-      _id: this.course._id,
-      code: this.course.code,
-      name: this.course.name,
-      grade: this.course.grade,
-      section: this.course.section as SectionEnum,
-      ects: this.course.ects
+      _id: course._id,
+      code: course.code,
+      name: course.name,
+      grade: course.grade,
+      section: course.section as SectionEnum,
+      ects: course.ects
     }, {emitEvent: false});
   }
 }

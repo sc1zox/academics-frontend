@@ -1,13 +1,12 @@
 <div class="progress-container">
   <h2>Progress</h2>
-  <p>{{ aS.totalCurrentEcts() }} / {{ maxEcts }}</p>
-  <app-progress></app-progress>
+  <p>{{ totalCurrentEcts() }} / {{ maxEcts }}</p>
+  <app-progress [completionPercentage]="completionPercentage()"></app-progress>
 </div>
 <div class="border"></div>
 <div class="chart-container">
-  <app-average-grade-display></app-average-grade-display>
-  <app-grade-achievement></app-grade-achievement>
-  <app-bar-chart></app-bar-chart>
-  <app-pie-chart></app-pie-chart>
+  <app-average-grade-display [averageGrade]="averageGrade()"></app-average-grade-display>
+  <app-grade-achievement [requiredGradesForTargets]="requiredGradesForTargets()"></app-grade-achievement>
+  <app-bar-chart [gradeOccurrence]="gradeOccurrence()"></app-bar-chart>
+  <app-pie-chart [gradeOccurrence]="gradeOccurrence()"></app-pie-chart>
 </div>
-

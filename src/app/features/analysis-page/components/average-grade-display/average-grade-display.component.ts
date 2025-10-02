@@ -1,6 +1,5 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {MatCard, MatCardContent} from '@angular/material/card';
-import {AnalysisService} from '../../analysis.service';
 
 @Component({
   selector: 'app-average-grade-display',
@@ -12,6 +11,5 @@ import {AnalysisService} from '../../analysis.service';
   styleUrl: './average-grade-display.component.css'
 })
 export class AverageGradeDisplayComponent {
-  private aS = inject(AnalysisService);
-  public avgGrade = computed(()=> Math.round(this.aS.averageGrade()*1000)/1000);
+  public averageGrade = input.required<number>();
 }

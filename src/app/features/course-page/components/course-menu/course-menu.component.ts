@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, output} from '@angular/core';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-course-menu',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatMenuTrigger,
     MatMenu,
@@ -14,7 +15,7 @@ import {MatButton} from '@angular/material/button';
   styleUrl: './course-menu.component.css'
 })
 export class CourseMenuComponent {
-  @Output() course: EventEmitter<void> = new EventEmitter();
+  public course = output<void>()
 
   public createCourse(): void {
     this.course.emit();
